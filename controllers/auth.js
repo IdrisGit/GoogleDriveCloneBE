@@ -9,10 +9,7 @@ exports.register = async (req, res ,next) =>{
             email,
             password
         }) 
-        res.status(201).json({
-            success: true,
-            user
-        })
+       sendToken(user, 201, res)
     }catch(err){
         res.status(500).send(err)
     }
@@ -37,12 +34,14 @@ exports.login = async (req, res ,next) =>{
             res.status(404).json({success:false, error:"Invalid Credentials"})
         }
 
-        res.status(201).json({
-            success:true,
-            token: 'ada446ad6a6d',
-        })
-
+        sendToken(user, 200, res)
     }catch(err){
         res.status(500).send(err)
     }
 };
+
+
+const sendToken = (user, statusCode, res) => {
+    const token = user.getSignedToken()
+    res.status(statusCode).json({success : true, token})
+}
