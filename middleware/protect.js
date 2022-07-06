@@ -4,8 +4,11 @@ const User = require ('../models/User')
 exports.protect = async(req, res , next) =>{
     let token
 
-    if(req.headers.authorization && req.headers.authorization.startsWith('Bearer')){
-        token = req.headers.authorization.split(' ')[1]
+    if(
+        req.headers.authorization 
+        && 
+        req.headers.authorization.startsWith("Bearer")){
+        token = req.headers.authorization.split(" ")[1]
     }
 
     if(!token){
@@ -18,7 +21,7 @@ exports.protect = async(req, res , next) =>{
         const user = await User.findById(decoded.id)
 
         if(!user){
-            return res.status(404).send("User Not Foun")
+            return res.status(404).send("User Not Found")
         }
 
         req.user = user
