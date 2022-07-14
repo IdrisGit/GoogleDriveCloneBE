@@ -17,10 +17,14 @@ const UserSchema = new mongoose.Schema({
     ],
     },
     password: {
-       type: String,
+        type: String,
         required: [true, 'Please Provide A Password'],
         minlength: 6,
         select: false,
+    },
+    token: {
+        type: String,
+        default: "A"
     }
 })
 
@@ -38,7 +42,7 @@ UserSchema.methods.matchPasswords = async function(password){
 }
 
 UserSchema.methods.getSignedToken = function(){
-    return jwt.sign({id : this._id}, process.env.JWT_SECRET, {expiresIn : process.env.JWT_EXPIRE})
+    return jwt.sign({id : this._id}, process.env.JWT_SECRET)
 }
 
 const User = mongoose.model('User', UserSchema)
